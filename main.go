@@ -12,8 +12,8 @@ import (
 )
 
 const (
-	HEIGHT = 200
-	WIDTH  = 300
+	HEIGHT = 1000
+	WIDTH  = 1000
 )
 
 func run() {
@@ -30,16 +30,18 @@ func run() {
 	imd := imdraw.New(nil)
 
 	// WRITE SETUP CODE HERE
-	strat := &wl.OrdinalWalkingStrategy{}
+	strat := &wl.LevyFlightWalkingStrategy{}
 	walker := wl.NewWalker(WIDTH, HEIGHT, strat)
+	var prevPos pixel.Vec
 	// END SETUP CODE
 
 	for !win.Closed() {
 		win.Clear(colornames.Darkslategray)
 
 		// WRITE UPDATE CODE HERE
+		prevPos = walker.CurrentPos
 		walker.NextStep()
-		walker.Draw(imd)
+		walker.Draw(imd, prevPos)
 		// END UPDATE CODE
 
 		imd.Draw(win)
