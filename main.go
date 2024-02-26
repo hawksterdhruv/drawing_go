@@ -17,11 +17,11 @@ const (
 )
 
 func collision(m *mv.Mover) {
-	if m.Position.Y <= 0 {
+	if m.Position.Y-m.Size <= 0 {
 		m.Position.Y = m.Size
 		m.Velocity.Y = -m.Velocity.Y
 	}
-	if m.Position.X <= 0 || m.Position.X > WIDTH {
+	if m.Position.X-m.Size <= 0 || m.Position.X+m.Size > WIDTH {
 		m.Velocity.X = -m.Velocity.X
 	}
 }
@@ -42,7 +42,7 @@ func run() {
 	// WRITE SETUP CODE HERE
 	// TODO: have a method for setup and draw. Figure out a way to pass variables between them.
 	m := mv.Mover{
-		Position:     pixel.V(WIDTH/2, HEIGHT/2),
+		Position:     pixel.V(WIDTH/2, HEIGHT/2-200),
 		Velocity:     pixel.V(0, 0),
 		Acceleration: pixel.V(0, 0),
 		Size:         10,
@@ -55,9 +55,8 @@ func run() {
 		// WRITE UPDATE CODE HERE
 		m.Update()
 		// if win.JustPressed(pixel.MouseButtonLeft) {
-		// 	m.ApplyForce(pixel.V(0, -0.1))
+		// 	m.ApplyForce(pixel.V(0, -0.2))
 		// 	log.Println("pressed : ", m.Acceleration, m.Velocity)
-
 		// }
 		if win.Pressed(pixel.KeyRight) {
 			m.ApplyForce(pixel.V(0.01, 0))
@@ -69,7 +68,7 @@ func run() {
 			rightCount++
 			log.Println(rightCount)
 		}
-		m.ApplyForce(pixel.V(0, -0.1))
+		// m.ApplyForce(pixel.V(0, -0.1))
 
 		collision(&m)
 		m.Draw(imd)
