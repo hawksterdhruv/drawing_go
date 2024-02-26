@@ -24,5 +24,5 @@ func (m Mover) Draw(imd *imdraw.IMDraw) {
 }
 
 func (m *Mover) ApplyForce(force pixel.Vec) {
-	m.Acceleration = m.Acceleration.Add(force)
+	m.Acceleration = m.Acceleration.Add(force.Scaled(1 / m.Size))
 }

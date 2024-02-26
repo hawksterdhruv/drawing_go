@@ -18,7 +18,7 @@ const (
 
 func collision(m *mv.Mover) {
 	if m.Position.Y <= 0 {
-		m.Position.Y = m.Size
+		// m.Position.Y = m.Size
 		m.Velocity.Y = -m.Velocity.Y
 	}
 	if m.Position.X <= 0 || m.Position.X > WIDTH {
@@ -41,38 +41,52 @@ func run() {
 
 	// WRITE SETUP CODE HERE
 	// TODO: have a method for setup and draw. Figure out a way to pass variables between them.
-	m := mv.Mover{
+	m1 := mv.Mover{
 		Position:     pixel.V(WIDTH/2, HEIGHT/2),
 		Velocity:     pixel.V(0, 0),
 		Acceleration: pixel.V(0, 0),
 		Size:         10,
 	}
+	m2 := mv.Mover{
+		Position:     pixel.V(WIDTH/2+100, HEIGHT/2),
+		Velocity:     pixel.V(0, 0),
+		Acceleration: pixel.V(0, 0),
+		Size:         20,
+	}
 	// END SETUP CODE
-	leftCount, rightCount := 0, 0
+
 	for !win.Closed() {
 		win.Clear(colornames.Darkslategray)
 
 		// WRITE UPDATE CODE HERE
-		m.Update()
+		m1.Update()
+		m2.Update()
 		// if win.JustPressed(pixel.MouseButtonLeft) {
 		// 	m.ApplyForce(pixel.V(0, -0.1))
 		// 	log.Println("pressed : ", m.Acceleration, m.Velocity)
 
 		// }
 		if win.Pressed(pixel.KeyRight) {
-			m.ApplyForce(pixel.V(0.01, 0))
-			leftCount++
-			log.Println(leftCount)
+			m1.ApplyForce(pixel.V(0.01, 0))
+			m2.ApplyForce(pixel.V(0.01, 0))
+
 		}
 		if win.Pressed(pixel.KeyLeft) {
-			m.ApplyForce(pixel.V(-0.01, 0))
-			rightCount++
-			log.Println(rightCount)
-		}
-		m.ApplyForce(pixel.V(0, -0.1))
+			m1.ApplyForce(pixel.V(-0.01, 0))
+			m2.ApplyForce(pixel.V(-0.01, 0))
 
-		collision(&m)
-		m.Draw(imd)
+		}
+		gravity := pixel.V(0, -0.025)
+		weight1 := gravity.Scaled(m1.Size)
+		weight2 := gravity.Scaled(m2.Size)
+		m1.ApplyForce(weight1)
+		m2.ApplyForce(weight2)
+
+		collision(&m1)
+		collision(&m2)
+
+		m1.Draw(imd)
+		m2.Draw(imd)
 		// END UPDATE CODE
 		imd.Draw(win)
 		imd.Clear()
