@@ -28,13 +28,19 @@ func run() {
 		panic(err)
 	}
 	imd := imdraw.New(nil)
-	walker := wl.NewWalker(WIDTH, HEIGHT)
+
+	// WRITE SETUP CODE HERE
+	strat := &wl.OrdinalWalkingStrategy{}
+	walker := wl.NewWalker(WIDTH, HEIGHT, strat)
+	// END SETUP CODE
 
 	for !win.Closed() {
 		win.Clear(colornames.Darkslategray)
 
-		walker.Update()
+		// WRITE UPDATE CODE HERE
+		walker.NextStep()
 		walker.Draw(imd)
+		// END UPDATE CODE
 
 		imd.Draw(win)
 		win.Update()
